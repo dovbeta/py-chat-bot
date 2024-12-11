@@ -1,0 +1,19 @@
+{
+    "head": "John Doe",
+    "residence_certificate": "contact via Telegram @john_doe",
+    "duty_phone": "+1234567890",
+    "heating_period": "October 15 - April 15",
+    "address": "123 Main St, Anytown, USA",
+    "duty_schedule": "Daily, 8:00 AM – 9:00 PM",
+    "maintenance_fee": "$0.30/sq ft",
+    "app_link": "app.page.link/example",
+    "plumber": "Mike +1234567891",
+    "accounting": "Jane https://t.me/jane_doe",
+    "heating_readings": "submit monthly after the 25th via the app",
+    "heating_calculation": "http://example.com/heating-rules",
+    "heating_rate": "$75/MWh",
+    "elevator_emergency": "+1234567892",
+    "report_issue": "create a request in the app",
+    "contact_osbb": "email osbb@example.com",
+    "bank_details": "IBAN: US12345678901234567890, Company Code: 12345678"
+}
