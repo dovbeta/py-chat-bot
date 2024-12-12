@@ -4,14 +4,22 @@ import logging
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, CallbackContext
 
-# Load configuration
-def load_config():
+def load_json_file(file_path):
     try:
-        with open("config.json", "r", encoding="utf-8") as file:
+        with open(file_path, "r", encoding="utf-8") as file:
             return json.load(file)
     except Exception as e:
-        logging.error(f"Error loading configuration: {e}")
+        logging.error(f"Error loading {file_path}: {e}")
         return {}
+
+def load_config():
+    return load_json_file("config.json")
+
+def load_context():
+    return load_json_file("context.json")
+
+def load_allowed_chats():
+    return load_json_file("allowed_chats.json")
 
 config = load_config()
 
@@ -27,24 +35,6 @@ logging.basicConfig(
     encoding="utf-8"
 )
 
-# Load context
-def load_context():
-    try:
-        with open("context.json", "r", encoding="utf-8") as file:
-            return json.load(file)
-    except Exception as e:
-        logging.error(f"Error loading context: {e}")
-        return {}
-
-# Load allowed chats
-def load_allowed_chats():
-    try:
-        with open("allowed_chats.json", "r", encoding="utf-8") as file:
-            return json.load(file)
-    except Exception as e:
-        logging.error(f"Error loading allowed chats: {e}")
-        return []
-
 # Handle messages
 async def handle_message(update: Update, context: CallbackContext) -> None:
     chat_id = update.message.chat_id
@@ -57,13 +47,14 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
         logging.warning(f"Chat {chat_id} is not allowed.")
         return
 
+    # If the message is a reply to another message, use the replied message as input
+    # Otherwise, use the message itself
     if user_message.strip() == "!" and update.message.reply_to_message:
         user_message = update.message.reply_to_message.text
-    elif not user_message.startswith("!"):
-        return
-
-    if user_message.startswith("!"):
+    elif user_message.startswith("!"):
         user_message = user_message[1:].strip()
+    else:
+        return
 
     osbb_context = load_context()
 
