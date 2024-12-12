@@ -12,16 +12,7 @@ def load_json_file(file_path):
         logging.error(f"Error loading {file_path}: {e}")
         return {}
 
-def load_config():
-    return load_json_file("config.json")
-
-def load_context():
-    return load_json_file("context.json")
-
-def load_allowed_chats():
-    return load_json_file("allowed_chats.json")
-
-config = load_config()
+config = load_json_file("config.json")
 
 # Set OpenAI API key
 openai.api_key = config.get("openai_api_key")
@@ -39,7 +30,7 @@ logging.basicConfig(
 async def handle_message(update: Update, context: CallbackContext) -> None:
     chat_id = update.message.chat_id
     user_message = update.message.text
-    allowed_chats = load_allowed_chats()
+    allowed_chats = load_json_file("allowed_chats.json")
 
     logging.info(f"Received message: {user_message} (chat: {chat_id})")
 
@@ -56,7 +47,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     else:
         return
 
-    osbb_context = load_context()
+    osbb_context = load_json_file("context.json")
 
     messages = [
         {"role": "system", "content": f"You are a bot helping OSBB residents. Here is the OSBB information:\n{json.dumps(osbb_context, ensure_ascii=False)}"},
